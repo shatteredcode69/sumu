@@ -9,6 +9,10 @@
 
 <style>
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -18,17 +22,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-/* 🌟 STAR BACKGROUND (FIRST PAGE) */
+/* 🌟 STAR BACKGROUND */
 .star {
     position: fixed;
     background: white;
     border-radius: 50%;
     opacity: 0.8;
     animation: twinkle 3s infinite ease-in-out;
+    z-index: 0;
 }
 
 @keyframes twinkle {
@@ -36,20 +41,20 @@ body {
     50% { opacity: 1; }
 }
 
-/* 🌟 GOLDEN PARTICLES (LETTER BACKGROUND) */
+/* 🌟 GOLDEN PARTICLES */
 .particle {
     position: fixed;
     width: 4px;
     height: 4px;
     background: #d4af37;
     border-radius: 50%;
-    opacity: 0.85; /* more opaque */
+    opacity: 0.85;
     animation: float 9s linear infinite;
     pointer-events: none;
+    z-index: 1;
 }
 
 @keyframes float {
-    /* 0% { transform: translateY(100vh); opacity: 0; } */
     20% { opacity: 0.85; }
     100% { transform: translateY(-10vh); opacity: 0; }
 }
@@ -57,11 +62,18 @@ body {
 .container {
     text-align: center;
     z-index: 2;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .flower {
-    font-size: 80px;
+    font-size: clamp(60px, 15vw, 100px);
     animation: bloom 2.8s ease forwards;
+    margin-bottom: 20px;
 }
 
 @keyframes bloom {
@@ -71,29 +83,34 @@ body {
 
 .name {
     font-family: 'Allura', cursive;
-    font-size: 48px;
-    margin: 15px 0 5px;
+    font-size: clamp(32px, 10vw, 60px);
+    margin: 15px 0 10px;
     color: #d4af37;
 }
 
 .subtitle {
     letter-spacing: 2px;
-    font-size: 11px;
+    font-size: clamp(9px, 2.5vw, 14px);
     margin-bottom: 25px;
     color: #aaa;
+    padding: 0 10px;
 }
 
 button {
-    padding: 10px 28px;
+    padding: 12px 24px;
     background: transparent;
     color: #d4af37;
     border: 1px solid #d4af37;
-    font-size: 11px;
+    font-size: clamp(10px, 2.2vw, 12px);
     cursor: pointer;
     transition: 0.3s;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
-button:hover {
+button:hover,
+button:active {
     background: #d4af37;
     color: #050508;
 }
@@ -106,6 +123,7 @@ button:hover {
     opacity: 0;
     transition: opacity 1.2s ease;
     pointer-events: none;
+    z-index: 2;
 }
 
 .magic-overlay.active {
@@ -118,29 +136,44 @@ button:hover {
     bottom: -100%;
     left: 50%;
     transform: translateX(-50%);
-    width: 92%;
-    max-width: 430px;
+    width: 95%;
+    max-width: 480px;
     background: #18181c;
-    padding: 25px;
+    padding: clamp(20px, 5vw, 30px);
     box-shadow: 0 20px 60px rgba(0,0,0,0.7);
     transition: 1.5s cubic-bezier(.22,1,.36,1);
-    line-height: 1.9;
-    font-size: 15px;
+    line-height: 1.8;
+    font-size: clamp(13px, 3.5vw, 16px);
     text-align: left;
     border-radius: 20px 20px 0 0;
     overflow-y: auto;
-    max-height: 85vh;
+    max-height: 90vh;
     z-index: 3;
+    right: 2.5%;
 }
 
 .letter.open {
     bottom: 0;
 }
 
+/* Custom scrollbar for letter */
+.letter::-webkit-scrollbar {
+    width: 6px;
+}
+
+.letter::-webkit-scrollbar-track {
+    background: rgba(212,175,55,0.1);
+}
+
+.letter::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 10px;
+}
+
 .final-line {
     text-align: center;
     margin-top: 25px;
-    font-size: 18px;
+    font-size: clamp(16px, 4vw, 20px);
     color: #d4af37;
     animation: glow 2.5s ease forwards;
 }
@@ -152,9 +185,56 @@ button:hover {
 
 .signature {
     font-family: 'Allura', cursive;
-    font-size: 22px;
-    margin-top: 25px;
+    font-size: clamp(18px, 5vw, 26px);
+    margin-top: 20px;
     color: #d4af37;
+    line-height: 1.8;
+}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 768px) {
+    body {
+        min-height: 100dvh; /* Use dynamic viewport height for mobile */
+    }
+
+    .container {
+        min-height: 100dvh;
+        justify-content: center;
+    }
+
+    .letter {
+        width: 100%;
+        left: 0;
+        right: 0;
+        transform: none;
+        border-radius: 20px;
+        max-height: 85dvh;
+        padding: 20px;
+    }
+
+    .letter.open {
+        bottom: 0;
+    }
+
+    button {
+        padding: 14px 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .letter {
+        max-height: 80dvh;
+        padding: 18px;
+    }
+
+    .signature {
+        font-size: clamp(16px, 4.5vw, 22px);
+    }
+}
+
+/* Prevent layout shift */
+html {
+    scroll-behavior: smooth;
 }
 
 </style>
@@ -199,49 +279,58 @@ for(let i=0;i<35;i++){
 
 <div class="letter" id="letter">
 
-    আমার প্রিয় Sumu,
+    আমার প্রিয় Sumu,
 
-    কখনও কখনও আমি আকাশের দিকে তাকিয়ে ভাবি ...
+    <br><br>
+    কখনও কখনও আমি আকাশের দিকে তাকিয়ে ভাবি ...
     কীভাবে এত আলো এক মানুষের মাঝে রাখা সম্ভব?
-    তারপর তোমার কথা মনে পড়ে।
+    তারপর তোমার কথা মনে পড়ে।
 
+    <br><br>
     If I could gather every sunrise,
     every trembling star,
     every quiet whisper of the night ...
     I would still fail to describe
     what you are to me.
 
+    <br><br>
     তুমি শুধু আমার জীবনের অংশ নও ...
     তুমি তার স্পন্দন।
     তুমি সেই নীরবতা
-    যেখানে আমার অস্থির হৃদয় বিশ্রাম পায়।
+    যেখানে আমার অস্থির হৃদয় বিশ্রাম পায়।
 
+    <br><br>
     Loving you does not feel loud.
     It feels eternal.
     Like something written
     long before we ever met.
 
+    <br><br>
     তোমার চোখে আমি ঘর খুঁজে পাই।
     তোমার হাসিতে পাই শান্তি।
     And in your name — Sumaia ...
     I hear something sacred.
 
+    <br><br>
     যখন পৃথিবী ভারী লাগে,
-    তুমি আমার হালকা হয়ে যাও।
-    যখন চারপাশ অন্ধকার হয়,
-    তুমি আমার আলো হয়ে ওঠো।
+    তুমি আমার হালকা হয়ে যাও।
+    যখন চারপাশ অন্ধকার হয়,
+    তুমি আমার আলো হয়ে ওঠো।
 
+    <br><br>
     If life is a journey through uncertain roads,
     then Sumu,
     you are the only direction
     my heart has ever been sure about.
 
-    আমি হয়তো নিখুঁত নই,
+    <br><br>
+    আমি হয়তো নিখুঁত নই,
     কিন্তু আমার ভালোবাসা তোমার জন্য ...
     তা নিখাদ।
     তা গভীর।
     তা অনন্ত।
 
+    <br><br>
     And if one day words disappear,
     if silence becomes all we have ...
     my heart will still speak your name,

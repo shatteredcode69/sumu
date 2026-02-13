@@ -24,6 +24,11 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
+    transition: background 2s ease;
+}
+
+body.opened {
+    background: radial-gradient(circle at bottom, #1a1220, #0a0408);
 }
 
 /* 🌟 STAR BACKGROUND */
@@ -60,6 +65,26 @@ body {
     100% { transform: translateY(-10vh); opacity: 0; }
 }
 
+/* 💗 HEART CONFETTI */
+.heart-confetti {
+    position: fixed;
+    font-size: clamp(20px, 5vw, 40px);
+    pointer-events: none;
+    z-index: 5;
+    animation: confetti-fall 4s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(-45deg) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(360deg) scale(0.5);
+    }
+}
+
 .container {
     text-align: center;
     z-index: 2;
@@ -69,12 +94,19 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: opacity 1.5s ease;
+}
+
+.container.fade {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .flower {
     font-size: clamp(60px, 15vw, 100px);
     animation: bloom 2.8s ease forwards;
     margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(212,175,55,0.3));
 }
 
 @keyframes bloom {
@@ -87,42 +119,68 @@ body {
     font-size: clamp(32px, 10vw, 60px);
     margin: 15px 0 10px;
     color: #d4af37;
+    text-shadow: 0 0 20px rgba(212,175,55,0.4);
+    letter-spacing: 2px;
 }
 
 .subtitle {
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     font-size: clamp(9px, 2.5vw, 14px);
-    margin-bottom: 25px;
-    color: #aaa;
+    margin-bottom: 30px;
+    color: #b89968;
     padding: 0 10px;
+    font-weight: 500;
 }
 
 button {
-    padding: 12px 24px;
-    background: transparent;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, transparent 0%, rgba(212,175,55,0.1) 100%);
     color: #d4af37;
-    border: 1px solid #d4af37;
+    border: 2px solid #d4af37;
     font-size: clamp(10px, 2.2vw, 12px);
     cursor: pointer;
-    transition: 0.3s;
-    border-radius: 4px;
-    font-weight: 600;
-    letter-spacing: 1px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 50px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    position: relative;
+    overflow: hidden;
 }
 
-button:hover,
-button:active {
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
     background: #d4af37;
+    transition: left 0.4s ease;
+    z-index: -1;
+    border-radius: 50px;
+}
+
+button:hover::before {
+    left: 0;
+}
+
+button:hover {
     color: #050508;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(212,175,55,0.3);
+}
+
+button:active {
+    transform: translateY(-1px);
 }
 
 /* ✨ MAGICAL OPEN EFFECT */
 .magic-overlay {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle, rgba(212,175,55,0.25), transparent 60%);
+    background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 60%);
     opacity: 0;
-    transition: opacity 1.2s ease;
+    transition: opacity 1.5s ease;
     pointer-events: none;
     z-index: 3;
 }
@@ -139,16 +197,16 @@ button:active {
     transform: translateX(-50%);
     width: 95%;
     max-width: 480px;
-    background: rgba(24, 24, 28, 0.88);
-    backdrop-filter: blur(10px);
+    background: rgba(24, 24, 28, 0.92);
+    backdrop-filter: blur(15px);
     padding: clamp(20px, 5vw, 30px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(212,175,55,0.1);
-    transition: 1.5s cubic-bezier(.22,1,.36,1);
-    line-height: 1.8;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(212,175,55,0.2);
+    transition: 1.8s cubic-bezier(.22,1,.36,1);
+    line-height: 2;
     font-size: clamp(13px, 3.5vw, 16px);
     text-align: left;
     border-radius: 20px 20px 0 0;
-    border: 1px solid rgba(212,175,55,0.15);
+    border: 1px solid rgba(212,175,55,0.25);
     overflow-y: auto;
     max-height: 90vh;
     z-index: 4;
@@ -159,45 +217,90 @@ button:active {
     bottom: 0;
 }
 
+/* Text animation in letter */
+.letter p, .letter div:not(.final-line):not(.signature) {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.letter.open p:nth-child(1) { animation-delay: 0.3s; }
+.letter.open p:nth-child(2) { animation-delay: 0.5s; }
+.letter.open p:nth-child(3) { animation-delay: 0.7s; }
+.letter.open p:nth-child(4) { animation-delay: 0.9s; }
+.letter.open p:nth-child(5) { animation-delay: 1.1s; }
+.letter.open p:nth-child(6) { animation-delay: 1.3s; }
+.letter.open p:nth-child(7) { animation-delay: 1.5s; }
+.letter.open p:nth-child(8) { animation-delay: 1.7s; }
+.letter.open p:nth-child(9) { animation-delay: 1.9s; }
+.letter.open p:nth-child(10) { animation-delay: 2.1s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Custom scrollbar for letter */
 .letter::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .letter::-webkit-scrollbar-track {
-    background: rgba(212,175,55,0.1);
+    background: rgba(212,175,55,0.05);
 }
 
 .letter::-webkit-scrollbar-thumb {
-    background: #d4af37;
+    background: linear-gradient(to bottom, #d4af37, #c19a2e);
     border-radius: 10px;
+}
+
+.letter::-webkit-scrollbar-thumb:hover {
+    background: #e8c547;
 }
 
 .final-line {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 30px;
     font-size: clamp(16px, 4vw, 20px);
-    color: #d4af37;
-    animation: glow 2.5s ease forwards;
+    color: #ff6b9d;
+    animation: heartGlow 3s ease infinite;
+    font-weight: 600;
 }
 
-@keyframes glow {
-    from { opacity: 0; text-shadow: none; }
-    to { opacity: 1; text-shadow: 0 0 16px #d4af37; }
+@keyframes heartGlow {
+    0%, 100% {
+        opacity: 0.9;
+        text-shadow: 0 0 10px rgba(255, 107, 157, 0.4);
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 25px rgba(255, 107, 157, 0.8);
+    }
 }
 
 .signature {
     font-family: 'Allura', cursive;
-    font-size: clamp(18px, 5vw, 26px);
-    margin-top: 20px;
+    font-size: clamp(18px, 5vw, 28px);
+    margin-top: 25px;
     color: #d4af37;
-    line-height: 1.8;
+    line-height: 2;
+    animation: signatureGlow 2.8s ease forwards;
+}
+
+@keyframes signatureGlow {
+    from { opacity: 0; text-shadow: none; }
+    to { opacity: 1; text-shadow: 0 0 20px #d4af37; }
 }
 
 /* MOBILE OPTIMIZATIONS */
 @media (max-width: 768px) {
     body {
-        min-height: 100dvh; /* Use dynamic viewport height for mobile */
+        min-height: 100dvh;
     }
 
     .container {
@@ -210,7 +313,7 @@ button:active {
         left: 0;
         right: 0;
         transform: none;
-        border-radius: 20px;
+        border-radius: 25px 25px 0 0;
         max-height: 85dvh;
         padding: 20px;
     }
@@ -220,7 +323,11 @@ button:active {
     }
 
     button {
-        padding: 14px 32px;
+        padding: 16px 36px;
+    }
+
+    .name {
+        text-shadow: 0 0 15px rgba(212,175,55,0.5);
     }
 }
 
@@ -228,10 +335,19 @@ button:active {
     .letter {
         max-height: 80dvh;
         padding: 18px;
+        border-radius: 20px 20px 0 0;
     }
 
     .signature {
         font-size: clamp(16px, 4.5vw, 22px);
+    }
+
+    .flower {
+        margin-bottom: 15px;
+    }
+
+    .subtitle {
+        margin-bottom: 20px;
     }
 }
 
@@ -277,76 +393,85 @@ for(let i=0;i<35;i++){
     <div class="flower">🌷</div>
     <div class="name">Sumaia</div>
     <div class="subtitle">A LETTER WRITTEN FROM MY SOUL</div>
-    <button onclick="openLetter()">OPEN YOUR LETTER</button>
+    <button onclick="openLetter()">🤍 OPEN YOUR LETTER 🤍</button>
 </div>
 
 <div class="letter" id="letter">
 
-    আমার প্রিয় Sumu,
+    <p>আমার প্রিয় Sumu,</p>
 
-    <br><br>
+    <p>
     কখনও কখনও আমি আকাশের দিকে তাকিয়ে ভাবি ...
-    কীভাবে এত আলো এক মানুষের মাঝে রাখা সম্ভব?
-    তারপর তোমার কথা মনে পড়ে।
+    <br>কীভাবে এত আলো এক মানুষের মাঝে রাখা সম্ভব?
+    <br>তারপর তোমার কথা মনে পড়ে।
+    </p>
 
-    <br><br>
+    <p>
     If I could gather every sunrise,
-    every trembling star,
-    every quiet whisper of the night ...
-    I would still fail to describe
-    what you are to me.
+    <br>every trembling star,
+    <br>every quiet whisper of the night ...
+    <br>I would still fail to describe
+    <br>what you are to me.
+    </p>
 
-    <br><br>
+    <p>
     তুমি শুধু আমার জীবনের অংশ নও ...
-    তুমি তার স্পন্দন।
-    তুমি সেই নীরবতা
-    যেখানে আমার অস্থির হৃদয় বিশ্রাম পায়।
+    <br>তুমি তার স্পন্দন।
+    <br>তুমি সেই নীরবতা
+    <br>যেখানে আমার অস্থির হৃদয় বিশ্রাম পায়।
+    </p>
 
-    <br><br>
+    <p>
     Loving you does not feel loud.
-    It feels eternal.
-    Like something written
-    long before we ever met.
+    <br>It feels eternal.
+    <br>Like something written
+    <br>long before we ever met.
+    </p>
 
-    <br><br>
+    <p>
     তোমার চোখে আমি ঘর খুঁজে পাই।
-    তোমার হাসিতে পাই শান্তি।
-    And in your name — Sumaia ...
-    I hear something sacred.
+    <br>তোমার হাসিতে পাই শান্তি।
+    <br>And in your name — Sumaia ...
+    <br>I hear something sacred.
+    </p>
 
-    <br><br>
+    <p>
     যখন পৃথিবী ভারী লাগে,
-    তুমি আমার হালকা হয়ে যাও।
-    যখন চারপাশ অন্ধকার হয়,
-    তুমি আমার আলো হয়ে ওঠো।
+    <br>তুমি আমার হালকা হয়ে যাও।
+    <br>যখন চারপাশ অন্ধকার হয়,
+    <br>তুমি আমার আলো হয়ে ওঠো।
+    </p>
 
-    <br><br>
+    <p>
     If life is a journey through uncertain roads,
-    then Sumu,
-    you are the only direction
-    my heart has ever been sure about.
+    <br>then Sumu,
+    <br>you are the only direction
+    <br>my heart has ever been sure about.
+    </p>
 
-    <br><br>
+    <p>
     আমি হয়তো নিখুঁত নই,
-    কিন্তু আমার ভালোবাসা তোমার জন্য ...
-    তা নিখাদ।
-    তা গভীর।
-    তা অনন্ত।
+    <br>কিন্তু আমার ভালোবাসা তোমার জন্য ...
+    <br>তা নিখাদ।
+    <br>তা গভীর।
+    <br>তা অনন্ত।
+    </p>
 
-    <br><br>
+    <p>
     And if one day words disappear,
-    if silence becomes all we have ...
-    my heart will still speak your name,
-    Sumaia,
-    over and over again.
+    <br>if silence becomes all we have ...
+    <br>my heart will still speak your name,
+    <br>Sumaia,
+    <br>over and over again.
+    </p>
 
     <div class="final-line">
         তোমাকে অসীমভাবে ভালোবাসি, Sumaia 🤍
     </div>
 
     <div class="signature">
-        — Happy Valentine's Day <br>
-        — Forever Yours <br>
+        — Happy Valentine's Day 💕<br>
+        — Forever Yours ✨<br>
         — Abbas 💛
     </div>
 
@@ -354,14 +479,69 @@ for(let i=0;i<35;i++){
 
 <script>
 function openLetter(){
-    document.getElementById("letter").classList.add("open");
-    document.getElementById("magic").classList.add("active");
+    const letterEl = document.getElementById("letter");
+    const containerEl = document.querySelector(".container");
+    const magicEl = document.getElementById("magic");
+    
+    letterEl.classList.add("open");
+    magicEl.classList.add("active");
+    containerEl.classList.add("fade");
+    document.body.classList.add("opened");
 
+    // Fade out stars
     document.querySelectorAll(".star").forEach(s=>{
-        s.style.transition="opacity 1.5s";
+        s.style.transition="opacity 1.5s ease";
         s.style.opacity="0";
     });
+
+    // Create heart confetti explosion
+    createConfetti();
+
+    // Play subtle sound (optional - commented out)
+    // playSound();
 }
+
+function createConfetti() {
+    const hearts = ['💗', '💕', '💞', '💖', '🤍'];
+    const roses = ['🌹', '🌷', '✨', '💫'];
+    const allEmojis = [...hearts, ...roses];
+    
+    for(let i = 0; i < 25; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement("div");
+            confetti.className = "heart-confetti";
+            confetti.textContent = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+            confetti.style.left = Math.random() * 100 + "vw";
+            confetti.style.top = "-50px";
+            confetti.style.opacity = "1";
+            document.body.appendChild(confetti);
+            
+            // Remove after animation
+            setTimeout(() => confetti.remove(), 4000);
+        }, i * 50);
+    }
+}
+
+// Optional: Add sound effect (uncomment to enable)
+/*
+function playSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 523.25; // C5 note
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+}
+*/
 </script>
 
 </body>

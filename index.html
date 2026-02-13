@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Sumaia 🤍</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Allura&family=Noto+Serif+Bengali:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at bottom, #141421, #050508);
+    font-family: 'Noto Serif Bengali','Cormorant Garamond', serif;
+    color: #e8dcc8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 🌟 STAR BACKGROUND (FIRST PAGE) */
+.star {
+    position: fixed;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%,100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+/* 🌟 GOLDEN PARTICLES (LETTER BACKGROUND) */
+.particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: #d4af37;
+    border-radius: 50%;
+    opacity: 0.85; /* more opaque */
+    animation: float 9s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    /* 0% { transform: translateY(100vh); opacity: 0; } */
+    20% { opacity: 0.85; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+.container {
+    text-align: center;
+    z-index: 2;
+}
+
+.flower {
+    font-size: 80px;
+    animation: bloom 2.8s ease forwards;
+}
+
+@keyframes bloom {
+    0% { transform: scale(0.3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.name {
+    font-family: 'Allura', cursive;
+    font-size: 48px;
+    margin: 15px 0 5px;
+    color: #d4af37;
+}
+
+.subtitle {
+    letter-spacing: 2px;
+    font-size: 11px;
+    margin-bottom: 25px;
+    color: #aaa;
+}
+
+button {
+    padding: 10px 28px;
+    background: transparent;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #d4af37;
+    color: #050508;
+}
+
+/* ✨ MAGICAL OPEN EFFECT */
+.magic-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(212,175,55,0.25), transparent 60%);
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+}
+
+.magic-overlay.active {
+    opacity: 1;
+}
+
+/* LETTER */
+.letter {
+    position: fixed;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 430px;
+    background: #18181c;
+    padding: 25px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    transition: 1.5s cubic-bezier(.22,1,.36,1);
+    line-height: 1.9;
+    font-size: 15px;
+    text-align: left;
+    border-radius: 20px 20px 0 0;
+    overflow-y: auto;
+    max-height: 85vh;
+    z-index: 3;
+}
+
+.letter.open {
+    bottom: 0;
+}
+
+.final-line {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 18px;
+    color: #d4af37;
+    animation: glow 2.5s ease forwards;
+}
+
+@keyframes glow {
+    from { opacity: 0; text-shadow: none; }
+    to { opacity: 1; text-shadow: 0 0 16px #d4af37; }
+}
+
+.signature {
+    font-family: 'Allura', cursive;
+    font-size: 22px;
+    margin-top: 25px;
+    color: #d4af37;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- MAGIC OVERLAY -->
+<div class="magic-overlay" id="magic"></div>
+
+<script>
+/* Create Stars */
+for(let i=0;i<120;i++){
+    let s=document.createElement("div");
+    s.className="star";
+    let size=Math.random()*2+1;
+    s.style.width=size+"px";
+    s.style.height=size+"px";
+    s.style.top=Math.random()*100+"vh";
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDelay=Math.random()*3+"s";
+    document.body.appendChild(s);
+}
+
+/* Golden particles */
+for(let i=0;i<35;i++){
+    let p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(7+Math.random()*6)+"s";
+    p.style.animationDelay=Math.random()*5+"s";
+    document.body.appendChild(p);
+}
+</script>
+
+<div class="container">
+    <div class="flower">🌷</div>
+    <div class="name">Sumaia</div>
+    <div class="subtitle">A LETTER WRITTEN FROM MY SOUL</div>
+    <button onclick="openLetter()">OPEN YOUR LETTER</button>
+</div>
+
+<div class="letter" id="letter">
+
+    আমার প্রিয় Sumu,
+
+    কখনও কখনও আমি আকাশের দিকে তাকিয়ে ভাবি ...
+    কীভাবে এত আলো এক মানুষের মাঝে রাখা সম্ভব?
+    তারপর তোমার কথা মনে পড়ে।
+
+    If I could gather every sunrise,
+    every trembling star,
+    every quiet whisper of the night ...
+    I would still fail to describe
+    what you are to me.
+
+    তুমি শুধু আমার জীবনের অংশ নও ...
+    তুমি তার স্পন্দন।
+    তুমি সেই নীরবতা
+    যেখানে আমার অস্থির হৃদয় বিশ্রাম পায়।
+
+    Loving you does not feel loud.
+    It feels eternal.
+    Like something written
+    long before we ever met.
+
+    তোমার চোখে আমি ঘর খুঁজে পাই।
+    তোমার হাসিতে পাই শান্তি।
+    And in your name — Sumaia ...
+    I hear something sacred.
+
+    যখন পৃথিবী ভারী লাগে,
+    তুমি আমার হালকা হয়ে যাও।
+    যখন চারপাশ অন্ধকার হয়,
+    তুমি আমার আলো হয়ে ওঠো।
+
+    If life is a journey through uncertain roads,
+    then Sumu,
+    you are the only direction
+    my heart has ever been sure about.
+
+    আমি হয়তো নিখুঁত নই,
+    কিন্তু আমার ভালোবাসা তোমার জন্য ...
+    তা নিখাদ।
+    তা গভীর।
+    তা অনন্ত।
+
+    And if one day words disappear,
+    if silence becomes all we have ...
+    my heart will still speak your name,
+    Sumaia,
+    over and over again.
+
+    <div class="final-line">
+        তোমাকে অসীমভাবে ভালোবাসি, Sumaia 🤍
+    </div>
+
+    <div class="signature">
+        — Happy Valentine's Day <br>
+        — Forever Yours <br>
+        — Abbas 💛
+    </div>
+
+</div>
+
+<script>
+function openLetter(){
+    document.getElementById("letter").classList.add("open");
+    document.getElementById("magic").classList.add("active");
+
+    document.querySelectorAll(".star").forEach(s=>{
+        s.style.transition="opacity 1.5s";
+        s.style.opacity="0";
+    });
+}
+</script>
+
+</body>
+</html>
